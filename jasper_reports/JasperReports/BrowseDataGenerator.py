@@ -5,6 +5,8 @@
 #                         http://www.NaN-tic.com
 # Copyright (c) 2012 Omar Castiñeira Saavedra <omar@pexego.es>
 #                         Pexego Sistemas Informáticos http://www.pexego.es
+# Copyright (C) 2013 Tadeus Prastowo <tadeus.prastowo@infi-nity.com>
+#                         Vikasa Infinity Anugrah <http://www.infi-nity.com>
 #
 # WARNING: This program as such is intended to be used by professional
 # programmers who take the whole responsability of assessing all potential
@@ -34,7 +36,15 @@ import csv
 import copy
 import base64
 from xml.dom.minidom import getDOMImplementation
-from openerp.osv import orm, osv, fields
+
+try:
+    import release
+    from osv import orm, osv, fields
+except ImportError:
+    import openerp
+    from openerp import release
+    from openerp.osv import orm, osv, fields
+
 import tempfile
 import codecs
 import logging
@@ -55,7 +65,7 @@ class BrowseDataGenerator(AbstractDataGenerator):
         self.imageFiles = {}
         self.temporaryFiles = []
         self.logger = logging.getLogger(__name__)
-    
+
     def warning(self, message):
         if self.logger:
             self.logger.warning("%s" % message)
@@ -72,6 +82,7 @@ class BrowseDataGenerator(AbstractDataGenerator):
 
     def valueInAllLanguages(self, model, id, field):
         context = copy.copy(self.context)
+        model = self.pool.get(model)
         values = {}
         for language in self.languages():
             if language == 'en_US':
@@ -99,17 +110,17 @@ class BrowseDataGenerator(AbstractDataGenerator):
             else:
                 currentPath = root
             if root == 'Attachments':
-                ids = self.pool.get('ir.attachment').search(self.cr, self.uid, [('res_model','=',record._table_name),('res_id','=',record.id)])
+                ids = self.pool.get('ir.attachment').search(self.cr, self.uid, [('res_model','=',record._name),('res_id','=',record.id)])
                 value = self.pool.get('ir.attachment').browse(self.cr, self.uid, ids, self.context)
             elif root == 'User':
                 value = self.pool.get('res.users').browse(self.cr, self.uid, [self.uid], self.context)
             else:
                 if root == 'id':
-                    value = record._id
-                elif record.__hasattr__(root):
-                    value = record.__getattr__(root)
+                    value = record.id
+                elif hasattr(record, root):
+                    value = getattr(record, root)
                 else:
-                    self.warning("Field '%s' does not exist in model '%s'." % (root, record._table._name))
+                    self.warning("Field '%s' does not exist in model '%s'." % (root, record._name))
                     continue
 
                 if isinstance(value, orm.browse_record):
@@ -124,7 +135,7 @@ class BrowseDataGenerator(AbstractDataGenerator):
             # If we wanted an INNER JOIN we wouldn't check for "value" and
             # return an empty currentRecords
             if value:
-                # Only 
+                # Only
                 newRecords = []
                 for v in value:
                     currentNewRecords = []
@@ -137,7 +148,7 @@ class BrowseDataGenerator(AbstractDataGenerator):
 
                 currentRecords = newRecords
         return currentRecords
-        
+
 class XmlBrowseDataGenerator(BrowseDataGenerator):
     # XML file generation works as follows:
     # By default (if no OPENERP_RELATIONS property exists in the report) a record will be created
@@ -186,18 +197,18 @@ class XmlBrowseDataGenerator(BrowseDataGenerator):
             fieldNode = self.document.createElement( root )
             recordNode.appendChild( fieldNode )
             if root == 'Attachments':
-                ids = self.pool.get('ir.attachment').search(self.cr, self.uid, [('res_model','=',record._table_name),('res_id','=',record.id)])
+                ids = self.pool.get('ir.attachment').search(self.cr, self.uid, [('res_model','=',record._name),('res_id','=',record.id)])
                 value = self.pool.get('ir.attachment').browse(self.cr, self.uid, ids)
             elif root == 'User':
                 value = self.pool.get('res.users').browse(self.cr, self.uid, self.uid, self.context)
             else:
                 if root == 'id':
-                    value = record._id
-                elif record.__hasattr__(root):
-                    value = record.__getattr__(root)
+                    value = record.id
+                elif hasattr(record, root):
+                    value = getattr(record, root)
                 else:
                     value = None
-                    self.warning("Field '%s' does not exist in model '%s'." % (root, record._table._name))
+                    self.warning("Field '%s' does not exist in model '%s'." % (root, record._name))
 
             # Check if it's a many2one
             if isinstance(value, orm.browse_record):
@@ -217,10 +228,10 @@ class XmlBrowseDataGenerator(BrowseDataGenerator):
                     self.generateXmlRecord(value[0], records, fieldNode, currentPath, fields2)
                 continue
 
-            if field in record._table._columns:
-                field_type = record._table._columns[field]._type
-            elif field in record._table._inherit_fields:
-                field_type = record._table._inherit_fields[field][2]._type
+            if field in record._columns:
+                field_type = record._columns[field]._type
+            elif field in record._inherit_fields:
+                field_type = record._inherit_fields[field][2]._type
 
             # The rest of field types must be converted into str
             if field == 'id':
@@ -229,7 +240,7 @@ class XmlBrowseDataGenerator(BrowseDataGenerator):
             elif value == False:
                 value = ''
             elif field_type == 'date':
-                value = '%s 00:00:00' % str(value) 
+                value = '%s 00:00:00' % str(value)
             elif field_type == 'binary':
                 imageId = (record.id, field)
                 if imageId in self.imageFiles:
@@ -314,7 +325,7 @@ class CsvBrowseDataGenerator(BrowseDataGenerator):
             else:
                 currentPath = root
             if root == 'Attachments':
-                ids = self.pool.get('ir.attachment').search(self.cr, self.uid, [('res_model','=',record._table_name),('res_id','=',record.id)])
+                ids = self.pool.get('ir.attachment').search(self.cr, self.uid, [('res_model','=',record._name),('res_id','=',record.id)])
                 value = self.pool.get('ir.attachment').browse(self.cr, self.uid, ids)
             elif root == 'User':
                 value = self.pool.get('res.users').browse(self.cr, self.uid, self.uid, self.context)
@@ -331,12 +342,12 @@ class CsvBrowseDataGenerator(BrowseDataGenerator):
                 continue
             else:
                 if root == 'id':
-                    value = record._id
-                elif record.__hasattr__(root):
-                    value = record.__getattr__(root)
+                    value = record.id
+                elif hasattr(record, root):
+                    value = getattr(record, root)
                 else:
                     value = None
-                    self.warning("Field '%s' (path: %s) does not exist in model '%s'." % (root, currentPath, record._table._name))
+                    self.warning("Field '%s' (path: %s) does not exist in model '%s'." % (root, currentPath, record._name))
 
 
             # Check if it's a many2one
@@ -370,12 +381,12 @@ class CsvBrowseDataGenerator(BrowseDataGenerator):
             # Show all translations for a field
             type = self.report.fields()[currentPath]['type']
             if type == 'java.lang.Object':
-                value = self.valueInAllLanguages(record._table, record.id, root)
+                value = self.valueInAllLanguages(record._name, record.id, root)
 
-            if field in record._table._columns:
-                field_type = record._table._columns[field]._type
-            elif field in record._table._inherit_fields:
-                field_type = record._table._inherit_fields[field][2]._type
+            if field in record._columns:
+                field_type = record._columns[field]._type
+            elif field in record._inherit_fields:
+                field_type = record._inherit_fields[field][2]._type
 
             # The rest of field types must be converted into str
             if field == 'id':
@@ -384,7 +395,7 @@ class CsvBrowseDataGenerator(BrowseDataGenerator):
             elif value in (False,None):
                 value = ''
             elif field_type == 'date':
-                value = '%s 00:00:00' % str(value) 
+                value = '%s 00:00:00' % str(value)
             elif field_type == 'binary':
                 imageId = (record.id, field)
                 if imageId in self.imageFiles:
