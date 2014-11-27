@@ -29,13 +29,14 @@
 #
 ##############################################################################
 
-import os
 import glob
-import time
+import logging
+import os
 import socket
 import subprocess
+import time
 import xmlrpclib
-import logging
+
 
 try:
     import release

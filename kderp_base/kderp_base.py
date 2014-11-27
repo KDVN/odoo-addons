@@ -1,5 +1,6 @@
 from openerp import pooler
 
+
 def get_new_from_tree( cr, uid, id, object, lists, field, startnum=1, step_num=1, context={}):
     res = 0
     list_delete=[]

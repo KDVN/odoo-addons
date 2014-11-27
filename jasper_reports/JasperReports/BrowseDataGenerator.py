@@ -31,11 +31,18 @@
 #
 ##############################################################################
 
-import os
-import csv
-import copy
 import base64
+import codecs
+import copy
+import csv
+import logging
+import os
+import tempfile
 from xml.dom.minidom import getDOMImplementation
+
+from AbstractDataGenerator import *
+from JasperReport import *
+
 
 try:
     import release
@@ -45,12 +52,7 @@ except ImportError:
     from openerp import release
     from openerp.osv import orm, osv, fields
 
-import tempfile
-import codecs
-import logging
 
-from JasperReport import *
-from AbstractDataGenerator import *
 
 class BrowseDataGenerator(AbstractDataGenerator):
     def __init__(self, report, model, pool, cr, uid, ids, context):

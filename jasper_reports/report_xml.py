@@ -29,18 +29,19 @@
 #
 ##############################################################################
 
-import os
 import base64
-
-import openerp
-from openerp import release
-from openerp import report
-from openerp.osv import orm, osv, fields
-from . import jasper_report
-from openerp.tools.translate import _
-
+import os
 import unicodedata
 from xml.dom.minidom import getDOMImplementation
+
+from openerp import release
+from openerp import report
+import openerp
+from openerp.osv import orm, osv, fields
+from openerp.tools.translate import _
+
+from . import jasper_report
+
 
 src_chars = """ '"()/*-+?¿!&$[]{}@#`'^:;<>=~%,\\"""
 src_chars = unicode(src_chars, 'iso-8859-1')

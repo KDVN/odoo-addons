@@ -26,12 +26,13 @@
 #
 ##############################################################################
 
+import codecs
 import csv
 from xml.dom.minidom import getDOMImplementation
-import codecs
 
-from JasperReport import *
 from AbstractDataGenerator import *
+from JasperReport import *
+
 
 class CsvRecordDataGenerator(AbstractDataGenerator):
     def __init__(self, report, records):

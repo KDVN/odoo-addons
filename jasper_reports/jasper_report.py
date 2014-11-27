@@ -30,19 +30,20 @@
 ##############################################################################
 
 
-import openerp
-from openerp import release
-from openerp import report
-from openerp import pooler
-from openerp.osv import orm, osv, fields
-from openerp import tools
-from openerp import netsvc
-
+import logging
 import os
 import tempfile
-import logging
+
+from openerp import netsvc
+from openerp import pooler
+from openerp import release
+from openerp import report
+from openerp import tools
+import openerp
+from openerp.osv import orm, osv, fields
 
 from JasperReports import *
+
 
 # Determines the port where the JasperServer process should listen with its XML-RPC server for incomming calls
 tools.config['jasperport'] = tools.config.get('jasperport', 8090)

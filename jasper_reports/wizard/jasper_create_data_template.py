@@ -31,11 +31,12 @@
 
 import base64
 
-import openerp
-from openerp import release
 from openerp import pooler
+from openerp import release
+import openerp
 from openerp.osv import osv, fields
 from openerp.tools.translate import _
+
 
 class create_data_template(osv.osv_memory):
     _name = 'jasper.create.data.template'

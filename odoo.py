@@ -17,8 +17,9 @@
 #----------------------------------------------------------
 import os
 import re
-import sys
 import subprocess
+import sys
+
 
 GIT_HOOKS_PRE_PUSH = """
 #!/usr/bin/env python2

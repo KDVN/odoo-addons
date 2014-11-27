@@ -28,10 +28,12 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ##############################################################################
-from openerp.service.websrv_lib import reg_http_service
 from BaseHTTPServer import BaseHTTPRequestHandler
+
 from openerp import netsvc
 from openerp import tools
+from openerp.service.websrv_lib import reg_http_service
+
 
 class Message:
     def __init__(self):
