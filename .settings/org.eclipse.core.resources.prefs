@@ -18,3 +18,5 @@ encoding//odoo_product/models/__init__.py=utf-8
 encoding//openacademy/__init__.py=utf-8
 encoding//openacademy/__openerp__.py=utf-8
 encoding//openacademy/controllers.py=utf-8
+encoding//openacademy/partner.py=utf-8
+encoding//openacademy/wizard.py=utf-8
