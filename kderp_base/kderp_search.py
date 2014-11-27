@@ -21,8 +21,10 @@
 
 from openerp.osv import fields, osv
 from openerp.osv.osv import object_proxy
-import openerp.pooler as pooler
 from openerp.tools.translate import _
+
+import openerp.pooler as pooler
+
 
 class kderp_search(object_proxy):
     

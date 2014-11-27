@@ -26,6 +26,8 @@
 #-------------------------------------------------------------
 indo_array = ["Satu","Dua","Tiga","Empat","Lima","Enam","Tujuh","Delapan","Sembilan"]
 import re
+
+
 def amount_to_text_in(num,curr='Rupiah',reserve=False,recursive=False):
     
     res = ""

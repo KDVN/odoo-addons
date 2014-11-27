@@ -1,5 +1,6 @@
 from openerp.osv import orm, fields
 
+
 class kdodoo_website_product(orm.Model):
     _name = 'kdodoo.website.product'
     _inherit = 'product.product'

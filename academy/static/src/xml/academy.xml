@@ -1,7 +1,0 @@
-<template>
-<t t-name="academy.MyWidget">
-    <div class="oe_academy">
-        Hello World!
-    </div>
-</t>
-</template>

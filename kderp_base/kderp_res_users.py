@@ -6,6 +6,7 @@ from openerp.osv import fields, osv
 from openerp.tools import float_round, float_is_zero, float_compare
 from openerp.tools.translate import _
 
+
 class res_users(osv.osv):
     _name = "res.users"
     _description = "Users"

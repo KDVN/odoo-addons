@@ -30,8 +30,10 @@
 ##############################################################################
 
 import os
-from lxml import etree
 import re
+
+from lxml import etree
+
 
 try:
     import release

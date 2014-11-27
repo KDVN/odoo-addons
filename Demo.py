@@ -158,7 +158,7 @@ def main():
     else:
         import openerp
         openerp.cli.main()
+        return openerp
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     main()
-

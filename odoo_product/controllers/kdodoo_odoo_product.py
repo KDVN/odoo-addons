@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from openerp import http
+
 from openerp.addons.web.controllers import main
+
 
 class kdodoo_website(http.Controller):
     @http.route('/products', auth='public', website=True)

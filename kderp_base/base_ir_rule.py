@@ -23,8 +23,9 @@ import time
 from openerp import SUPERUSER_ID
 from openerp import tools
 from openerp.osv import fields, osv, expression
-from openerp.tools.safe_eval import safe_eval as eval
 from openerp.tools.misc import unquote as unquote
+from openerp.tools.safe_eval import safe_eval as eval
+
 
 class ir_rule(osv.osv):
     _name = 'ir.rule'
