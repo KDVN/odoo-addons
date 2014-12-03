@@ -15,3 +15,5 @@ class product(models.Model):
     _inherit = "product.product"
 
     max_quantity = fields.Float(string="Maximum Quantity")
+    provider_latitude = fields.Text(string="Latitude")
+    provider_longitude = fields.Text(string="Longitude")
