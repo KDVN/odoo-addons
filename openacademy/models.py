@@ -35,7 +35,7 @@ class Course(models.Model):
                         "The course title must be unique"
                         ),
                        ]
-    
+    #
 class Session(models.Model):
     _name = 'openacademy.session'
     
